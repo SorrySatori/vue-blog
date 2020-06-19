@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Blog Site</title>
+    <script src='https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.js'></script>
+
+    <link rel="stylesheet" type="text/css" href="./style.css">
+   
+</head>
+<body>
+    <div class='header'>
+    <h1>THE BEST PAGE ABOUT SLOTHS. MUCH BETTER THAN YOUR FAVORITE SLOTH PAGE</h1>
+    </div>
+    <div id='blogPosts'>
+
+            <blog-post
+            v-for='post in posts'
+            v-bind:blogpost='post'
+            ></blog-post>
+    </div>
+
+    <div id='blogPostCreation'>
+        <h2>Make a new blog post</h2>
+        <input v-model='title' placeholder="Please enter title"><br>
+        <input v-model='username' placeholder="Please enter name"><br>
+        <input v-model='date' placeholder="Please enter date"><br>
+        <input v-model='content' placeholder="Please type your post"><br>
+        <button v-on:click='publishPost'>Publish Post</button>
+        <button v-on:click='deletePost'>Delete Last Post</button>
+
+    </div>
+
+    <script>
+        Vue.component('blog-post', {
+            props: ['blogpost'],
+            template: `<div id='singleBlogPost'>
+            <h2>{{ blogpost.title }}</h2>
+            <h3>{{ blogpost.username }}</h3>
+            <h4>{{ blogpost.date }}</h4>
+            <p>{{ blogpost.content }}</p>
+        </div>`,
+        })
+
+        var BlogVue = new Vue({
+            el: '#blogPosts',
+            data: {
+                posts: [
+                    {title: 'Sloths are Great', username: 'Matej',
+                date: 'May 6, 2020', content: `Sloths of the present day are 
+                arboreal mammals noted for slowness of movement and for spending
+                 most of their lives hanging upside down in the trees of the 
+                 tropical rain forests of South America and Central America. 
+                 The six species are in two families: two-toed sloths and three-toed
+                  sloths. Despite this traditional naming, all sloths actually have 
+                  three toes on each rear limb, 
+                although two-toed sloths have only two digits on each forelimb.`},
+                    {title: 'Sloths are Cute', username: 'Matej',
+                date: 'May 7, 2020', content: `The sloth is so named 
+                because of its very low metabolism and deliberate movements,
+                 sloth being related to the word slow. This supports their 
+                 low-energy diet of leaves and avoids detection by predatory 
+                 hawks and cats that hunt by sight. Sloths are almost helpless
+                  on the ground but are able to swim. The shaggy coat has grooved
+                   hair that is host to symbiotic green algae which camouflages the animal
+                    in the trees and provides it nutrients. The algae also nourishes sloth moths,
+                     some species of which exist solely on sloths.
+
+`}
+                ]
+            }
+        })
+
+        var postBlogVue = new Vue ({
+            el: '#blogPostCreation',
+            data: {
+                title: '',
+                username: '',
+                date: '',
+                content: '',
+            },
+            methods: {
+                publishPost: function() {
+                    var newPost = {
+                        title: this.title,
+                        username: this.username,
+                        date: this.date,
+                        content: this.content
+                    }
+                    BlogVue.posts.push(newPost)
+                    this.title = ''
+                    this.username = ''
+                    this.date = ''
+                    this.content = ''
+                },
+                deletePost: function() {
+                    BlogVue.posts.pop()
+                }
+            }
+        })
+
+    </script>
+
+</body>
+</html>
+
